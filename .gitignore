@@ -3,6 +3,12 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
 # C extensions
 *.so
 
