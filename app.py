@@ -3,6 +3,8 @@ Streamlit Application: Indian Court Judgment Analyzer & Simplifier.
 An advanced NLP system to simplify, segment, summarize, and demystify Indian judicial decisions.
 """
 
+from html import escape
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -30,7 +32,6 @@ from legal_nlp.summarizer import LegalSummarizer
 from legal_nlp.plain_english import (
     detect_and_explain_jargon,
     lookup_statutory_sections,
-    calculate_readability,
     generate_layman_brief
 )
 from legal_nlp.legal_ner import (
@@ -68,13 +69,10 @@ st.markdown("""
         margin-bottom: 1.5rem;
     }
     
-    /* Card Containers */
-    .metric-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    .case-metadata-value {
+        font-size: 1.75rem;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
     }
     .verdict-banner-green {
         background: linear-gradient(135deg, #ecfdf5, #d1fae5);
@@ -259,7 +257,6 @@ with st.spinner("Analyzing legal judgment, classifying rhetorical roles, and ext
     bench_info = determine_bench_type(entities.get("Judges", []))
     statutes_lookup = lookup_statutory_sections(clean_text)
     jargon_detected = detect_and_explain_jargon(clean_text)
-    readability_orig = calculate_readability(clean_text)
 
     # Summarization
     extractive_summary = summarizer.summarize(
@@ -282,10 +279,6 @@ with st.spinner("Analyzing legal judgment, classifying rhetorical roles, and ext
         top_statutes=statutes_lookup
     )
 
-    # Readability of the simplified brief
-    brief_text = f"{layman_brief['what_happened']} {layman_brief['core_dispute']} {layman_brief['court_reasoning']} {layman_brief['final_outcome']}"
-    readability_brief = calculate_readability(brief_text)
-
 
 # ==============================================================================
 # 5. DASHBOARD TABS
@@ -295,7 +288,7 @@ tab_brief, tab_reader, tab_jargon, tab_analytics, tab_summary, tab_export = st.t
     "📋 Case at a Glance (Plain English)",
     "📖 Interactive Document Reader",
     "💡 Plain-English Jargon Buster",
-    "📊 NLP & Readability Analytics",
+    "📊 NLP Analytics",
     "📑 Extractive Summaries",
     "📥 Export & Brief Generator"
 ])
@@ -321,55 +314,22 @@ with tab_brief:
     # 2. Case Metadata KPI Cards
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Court", metadata.get("court") or (entities.get("Courts", ["Court"])[0] if entities.get("Courts") else "Supreme Court of India"))
+        court = metadata.get("court") or next(iter(entities.get("Courts") or []), "Supreme Court of India")
+        st.text("Court")
+        st.markdown(f'<div class="case-metadata-value">{escape(court)}</div>', unsafe_allow_html=True)
     with col2:
-        st.metric("Bench Strength", bench_info["type"], f"{bench_info['count']} Judge(s)")
+        st.text("Bench Strength")
+        st.markdown(f'<div class="case-metadata-value">{escape(bench_info["type"])}</div>', unsafe_allow_html=True)
+        count = bench_info["count"]
+        st.caption(f"{count} {'judge' if count == 1 else 'judges'}")
     with col3:
         st.metric("Total Sentences", len(sentences), f"{len(clean_text.split())} words")
     with col4:
         st.metric("Rhetorical Roles", f"{df_results['Predicted Role'].nunique()} / 6 Detected")
 
-    st.write("")
-
-    # 3. Readability Reduction Impact
-    st.subheader("📉 Simplification & Readability Reduction")
-    col_r1, col_r2, col_r3 = st.columns(3)
-    with col_r1:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h4 style="margin:0; color:#dc2626;">Original Judgment Complexity</h4>
-            <p style="font-size:1.8rem; font-weight:700; margin:5px 0;">Grade {readability_orig['flesch_kincaid_grade']}</p>
-            <span style="color:#64748b; font-size:0.85rem;">{readability_orig['level_label']}</span><br>
-            <small>Avg sentence length: <b>{readability_orig['avg_sentence_length']} words</b></small>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col_r2:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h4 style="margin:0; color:#16a34a;">Simplified Brief Readability</h4>
-            <p style="font-size:1.8rem; font-weight:700; margin:5px 0;">Grade {readability_brief['flesch_kincaid_grade']}</p>
-            <span style="color:#64748b; font-size:0.85rem;">{readability_brief['level_label']}</span><br>
-            <small>Avg sentence length: <b>{readability_brief['avg_sentence_length']} words</b></small>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col_r3:
-        grade_drop = max(0.0, round(readability_orig['flesch_kincaid_grade'] - readability_brief['flesch_kincaid_grade'], 1))
-        ease_gain = max(0.0, round(readability_brief['flesch_reading_ease'] - readability_orig['flesch_reading_ease'], 1))
-        st.markdown(f"""
-        <div class="metric-card">
-            <h4 style="margin:0; color:#2563eb;">Accessibility Gain</h4>
-            <p style="font-size:1.8rem; font-weight:700; margin:5px 0;">+{ease_gain} pts</p>
-            <span style="color:#64748b; font-size:0.85rem;">Flesch Reading Ease Improvement</span><br>
-            <small>Complexity reduced by: <b>{grade_drop} grade levels</b></small>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.write("")
     st.divider()
 
-    # 4. Structured Plain-English 5-Point Brief
+    # 3. Structured Plain-English 5-Point Brief
     st.subheader("📝 5-Point Plain English Case Brief")
     
     with st.container():
@@ -486,7 +446,7 @@ with tab_jargon:
 
 
 # ------------------------------------------------------------------------------
-# TAB 4: NLP & READABILITY ANALYTICS
+# TAB 4: NLP ANALYTICS
 # ------------------------------------------------------------------------------
 with tab_analytics:
     st.subheader("📊 Document Structure & Rhetorical Analytics")
@@ -646,12 +606,8 @@ with tab_export:
         for item in statutes_lookup:
             markdown_report += f"- **{item['citation']}:** {item['meaning']}\n"
 
-        markdown_report += f"""
+        markdown_report += """
 ---
-### Readability & Accessibility Metrics:
-- **Original Judgment:** Grade {readability_orig['flesch_kincaid_grade']} (Flesch Ease: {readability_orig['flesch_reading_ease']})
-- **Simplified Brief:** Grade {readability_brief['flesch_kincaid_grade']} (Flesch Ease: {readability_brief['flesch_reading_ease']})
-- **Complexity Reduction:** {grade_drop} school grade levels
 
 *Generated via NyayaSar NLP Judgment Analyzer.*
 """
