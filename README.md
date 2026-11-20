@@ -43,7 +43,7 @@ Indian court judgments are notoriously lengthy, written in archaic colonial lega
 - Supports trained scikit-learn models (`best_role_classifier.pkl`) with a high-precision **Contextual Legal Discourse Engine** combining positional document priors and linguistic discourse markers.
 
 ### 4. 🧠 Legal-Weighted TextRank Summarization
-- Extractive summarization using cosine similarity on TF-IDF sentence representations with **PageRank centrality**.
+- Extractive summarization using cosine similarity on TF-IDF sentence representations with **Cosine similarity**.
 - **Role Weighting**: Dynamically boosts holding/decision ($2.0\times$) and reasoning ($1.6\times$) sentences over procedural boilerplate.
 - **Maximal Marginal Relevance (MMR)**: Eliminates repetitive or redundant sentences.
 - **Role-Based Summaries**: Extracts top representative sentences grouped by rhetorical category.
