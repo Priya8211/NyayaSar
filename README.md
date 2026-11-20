@@ -102,5 +102,10 @@ NLP Project/
 ## Dataset Reference
 - Trained on **LegalSeg** (`L-NLProc/LegalSeg_CSV`): Rhetorical role labeling dataset for Indian court judgments.
 
-# NyayaSar-AI
+# NyayaSar
+## Screenshot of the Dashboard
+<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/c822d24c-8b02-4b2c-8007-493489f52bb8" />
+<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/c6138129-1d39-4a2e-9c67-0e98a3096297" />
+
+
 An AI-powered Indian Court Judgment Simplifier and Analyzer that transforms complex legal judgments into easy-to-understand language using rhetorical segmentation, legal entity extraction, readability analysis, role-weighted summarization, and automated brief generation.
