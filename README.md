@@ -104,8 +104,30 @@ NLP Project/
 
 # NyayaSar
 ## Screenshot of the Dashboard
-<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/c822d24c-8b02-4b2c-8007-493489f52bb8" />
-<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/c6138129-1d39-4a2e-9c67-0e98a3096297" />
+<img width="1910" height="909" alt="image" src="https://github.com/user-attachments/assets/c28e82f7-68bf-4f26-88b8-75f666d18fc2" />
+
+<img width="1907" height="905" alt="image" src="https://github.com/user-attachments/assets/31a075a3-6690-4ce6-b916-98bce4f3d462" />
+
+<img width="1917" height="915" alt="image" src="https://github.com/user-attachments/assets/895aaf4c-a331-45d7-b87f-cf1b9fec0207" />
+
+<img width="1917" height="917" alt="image" src="https://github.com/user-attachments/assets/62fc0b7a-57f0-44bd-b7fc-fbb028981f4f" />
+
+<img width="1908" height="907" alt="image" src="https://github.com/user-attachments/assets/6ff60257-cc3d-4679-a76b-a5abbe5d3581" />
+
+<img width="1909" height="911" alt="image" src="https://github.com/user-attachments/assets/2c41f170-5325-401a-8ffb-27e7077edcba" />
+
+<img width="1908" height="902" alt="image" src="https://github.com/user-attachments/assets/56b0153a-3136-4b1e-ae1b-dd157b7cc2d9" />
+
+<img width="1907" height="911" alt="image" src="https://github.com/user-attachments/assets/10197081-4973-4a54-a39d-229f4df24651" />
+
+<img width="1907" height="912" alt="image" src="https://github.com/user-attachments/assets/bf313db0-7944-4e43-9dde-cc0d80f24d35" />
+
+
+
+
+
+
+
 
 
 An AI-powered Indian Court Judgment Simplifier and Analyzer that transforms complex legal judgments into easy-to-understand language using rhetorical segmentation, legal entity extraction, readability analysis, role-weighted summarization, and automated brief generation.
